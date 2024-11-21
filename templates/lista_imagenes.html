@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Consola - HomeLab{% endblock %}
+{% block content %}
+    {% load static %}
+
+    <h1>Imágenes Subidas</h1>
+    <ul>
+        {% for imagen in imagenes %}
+            <li>
+                <img src="{{ imagen.imagen.url }}" alt="{{ imagen.titulo }}" width="100">
+                <p><strong>{{ imagen.titulo }}</strong></p>
+                <p>{{ imagen.descripcion }}</p>
+                <p>Autor: {{ imagen.exif_metadata }}</p>
+                <p>Fecha: {{ imagen.fecha_subida }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

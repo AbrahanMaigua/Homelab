@@ -1,0 +1,98 @@
+/* Estilo general de la consola */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+img {
+  height: auto;
+  max-width: 50%;
+}
+body {
+    background-color: #121212;
+    color: #fff;
+}
+
+.console-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+/* Estilo del título */
+h2.title {
+    color: #fff;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Estilo para el input de comando */
+.comando-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #333;
+    border: 1px solid #444;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+}
+
+/* Cambiar el borde del input cuando está en foco */
+.comando-input:focus {
+    border-color: #4e9f3d;
+    outline: none;
+}
+
+/* Estilo para el área de resultados */
+.resultado {
+    background-color: #2c2c2c;
+    padding: 20px;
+    border-radius: 4px;
+    font-family: "Courier New", Courier, monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-height: 100px;
+    color: #dcdcdc;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Estilo para el botón */
+button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #4e9f3d;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #3c7a2d;
+}
+
+/* Agregar estilo responsivo */
+@media (max-width: 768px) {
+    .console-container {
+        padding: 10px;
+    }
+
+    .comando-input {
+        font-size: 0.9rem;
+    }
+}

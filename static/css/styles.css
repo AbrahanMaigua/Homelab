@@ -1,0 +1,85 @@
+/* dashboard/static/dashboard/styles.css */
+
+/* Estilos Generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* css/styles.css */
+
+/* Navbar Menu a la Derecha */
+.navbar {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    left: 1rem;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 1em 1em;
+    height: 1rem !important;;
+    width: 30rem;
+}
+.navbar >.is-flex a{
+    margin: 17px
+}
+
+
+/* Estilo de la sección */
+.section {
+    padding: 30px 0;
+}
+
+/* Títulos */
+.title {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Espaciado entre las cartas */
+.card {
+    margin-bottom: 20px;
+}
+
+/* Botón */
+.button {
+    text-align: center;
+}
+
+/* Estilo de imagen */
+.card-image img {
+    border-radius: 5px;
+}
+
+/* Estilos generales de la página */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+}
+
+footer {
+  
+    padding: 1em;
+    text-align: center;
+    width: 100%;
+}
+
+
+/* styles.css */
+#editor {
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+#editor:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Editor con Guardar</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .columns {
+      height: 100vh;
+    }
+
+    .editor, .preview {
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .editor {
+      border-right: 2px solid #ddd;
+    }
+
+    .preview {
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+
+    .textarea {
+      height: 100%;
+      resize: none;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .save-button {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="columns">
+    <!-- Editor de Markdown -->
+    <div class="column is-half editor">
+      <input 
+        type="text" 
+        id="post-title" 
+        class="input is-primary" 
+        placeholder="Título del post" 
+      />
+      <textarea 
+        id="markdown-input" 
+        class="textarea is-primary" 
+        placeholder="Escribe tu Markdown aquí..."># Bienvenido a Markdown
+## Este es un ejemplo
+Puedes insertar una imagen:
+![Alt text](https://via.placeholder.com/150)
+      </textarea>
+      <button class="button is-success save-button" id="save-post">Guardar</button>
+    </div>
+
+    <!-- Vista previa -->
+    <div class="column is-half preview" id="preview"></div>
+  </div>
+
+  <script>
+    // Conversor básico de Markdown a HTML
+    function markdownToHtml(markdown) {
+      return markdown
+        .replace(/^# (.*$)/gim, '<h1 class="is-size-1" >$1</h1>') // Encabezado nivel 1
+        .replace(/^## (.*$)/gim, '<h2 class="is-size-2">$1</h2>') // Encabezado nivel 2
+        .replace(/^### (.*$)/gim, '<h3 class="is-size-3">$1</h3>') // Encabezado nivel 3
+        .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>') // Citas
+        .replace(/^\>> (.*$)/gim, '<p class="has-text-centered">$1</p>') // Párrafo centrado
+        .replace(/!\[(.*?)\]\((.*?)\)/gim, '<img src="$2" alt="$1">') // Imágenes
+        .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>') // Negritas
+        .replace(/\*(.*?)\*/gim, '<em>$1</em>') // Cursivas
+        .replace(/\`(.*?)\`/gim, '<code>$1</code>') // Código inline
+        .replace(/\n$/gim, '<br>'); // Saltos de línea
+    }
+
+    // Referencias a los elementos
+    const input = document.getElementById('markdown-input');
+    const titleInput = document.getElementById('post-title');
+    const preview = document.getElementById('preview');
+    const saveButton = document.getElementById('save-post');
+
+    // Función para actualizar la vista previa
+    function updatePreview() {
+      const markdown = input.value;
+      const html = markdownToHtml(markdown);
+      preview.innerHTML = html;
+    }
+
+    // Ajustar el tamaño del textarea dinámicamente
+    function adjustTextareaHeight(textarea) {
+      textarea.style.height = 'auto'; // Reiniciar altura
+      textarea.style.height = textarea.scrollHeight + 'px'; // Ajustar a contenido
+    }
+
+    // Evento: Actualizar la vista previa y ajustar tamaño
+    input.addEventListener('input', () => {
+      updatePreview();
+      adjustTextareaHeight(input);
+    });
+
+    // Enviar post al servidor
+    saveButton.addEventListener('click', async () => {
+      const title = titleInput.value.trim();
+      const contentMarkdown = input.value.trim();
+
+      if (!title || !contentMarkdown) {
+        alert('Por favor, llena el título y el contenido del post.');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/posts/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title,
+            content_markdown: contentMarkdown,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          alert('Post guardado exitosamente: ' + data.title);
+        } else {
+          alert('Error al guardar el post.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrió un error al guardar el post.');
+      }
+    });
+
+    // Inicializar vista previa y ajuste inicial del textarea
+    updatePreview();
+    adjustTextareaHeight(input);
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Consola - HomeLab{% endblock %}
+{% block content %}
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/console.css' %}">
+
+<h2 class="title">Consola - HomeLab</h2>
+    <div id="resultado" class="resultado"></div>
+
+<div class="console-container">
+    <input type="text" id="comando" class="comando-input" placeholder="Escribe un comando" onkeydown="checkEnter(event)">
+    <button class="button is-link" onclick="enviarComando()">Ejecutar</button>
+
+</div>
+
+<script>
+    // Función para verificar si la tecla pulsada es Enter
+    function checkEnter(event) {
+        if (event.key === "Enter") {
+            enviarComando();
+        }
+    }
+
+    // Función para enviar el comando al servidor
+    function enviarComando() {
+        const comando = document.getElementById("comando").value;
+
+        if (comando.trim() === "") {
+            return; // No enviar si el campo está vacío
+        }
+
+        fetch("{% url 'consola' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: new URLSearchParams({comando})
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Verifica si el resultado contiene HTML (como una etiqueta <img>)
+            if (data.resultado && data.resultado.includes('<img')) {
+                document.getElementById("resultado").textContent = data.resultado.split('/')[-1];  // Muestra el resultado como texto
+                document.getElementById("resultado").innerHTML = data.resultado;  // Inyecta el HTML directamente
+            } else {
+                document.getElementById("resultado").textContent = data.resultado;  // Muestra el resultado como texto
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
+
+
+{% endblock %}

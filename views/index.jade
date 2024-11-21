@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  div#output
+    p Historial de comandos y resultados aparecerán aquí.
+
+  form(onSubmit="executeCommand(event)")
+    input#command(type="text", name="command", required, placeholder="Escribe tu comando...")
+
+  script.
+    async function executeCommand(event) {
+      event.preventDefault(); // Evitar recargar la página
+      const command = document.getElementById('command').value;
+
+      if (!command.trim()) {
+        alert('Por favor, ingresa un comando.');
+        return;
+      }
+
+      // Enviar el comando al servidor
+      const response = await fetch('/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ command })
+      });
+
+      const data = await response.json();
+
+      // Mostrar el resultado en la página
+      const outputDiv = document.getElementById('output');
+
+      // Crear un nuevo bloque para el comando y su resultado
+      const commandBlock = document.createElement('div');
+      commandBlock.style.marginBottom = '10px';
+      commandBlock.innerHTML = `
+        <p><strong>$ ${command}</strong></p>
+        <pre>${data.error ? `<span style="color: red;">Error: ${data.error}</span>` : data.output}</pre>
+      `;
+
+      // Añadir el bloque al historial de salida
+      outputDiv.appendChild(commandBlock);
+
+      // Desplazar automáticamente hacia el final
+      outputDiv.scrollTop = outputDiv.scrollHeight;
+
+      // Limpiar el input
+      document.getElementById('command').value = '';
+    }

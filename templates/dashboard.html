@@ -1,0 +1,28 @@
+<!-- /dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}dash - HomeLab{% endblock %}
+
+{% block content %}
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/dashbord.css' %}">
+
+    <!-- Hero Section -->
+    <section class="hero is-primary is-fullheight heroB">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">Bienvenido a tu HomeLab</h1>
+                <h2 class="subtitle">Gestiona y monitorea tus servicios desde un solo lugar</h2>
+            </div>
+        </div>
+        <!-- SVG en la parte inferior -->
+        <div class="svg-footer">
+            <svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#fff" fill-opacity="1" d="M0,160L48,186.7C96,213,192,267,288,288C384,309,480,299,576,277.3C672,256,768,224,864,218.7C960,213,1056,235,1152,250.7C1248,267,1344,277,1392,282.7L1440,288L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+            </svg>
+        </div>
+    </section>
+
+
+{% endblock %}
