@@ -13,6 +13,8 @@ var http = require('http');
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+var host = process.env.HOST || '0.0.0.0';
+
 app.set('port', port);
 
 /**
@@ -25,7 +27,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, host);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -85,6 +87,7 @@ function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
-    : 'port ' + addr.port;
+    : `http://${host}:$(addr.port}`;
   debug('Listening on ' + bind);
+  console.log(`http://${host}:${addr.port}`)
 }
