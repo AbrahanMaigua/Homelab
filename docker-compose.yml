@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Servicio para Node.js
+  nodejs:
+    image: node:22
+    container_name: nodejs-container
+    working_dir: /app
+    volumes:
+      - ./backend:/app  # Monta tu código local en el contenedor
+    ports:
+      - "3000:3000"  # Puerto 3000 para Node.js
+    environment:
+      - NODE_ENV=development
+    command: npm start
+    depends_on:
+      - mongo
+      - postgres
+
+  # Servicio para MongoDB
+  mongo:
+    image: mongo:4.4
+    container_name: mongo-container
+    ports:
+      - "27018:27017"  # Puerto estándar de MongoDB
+    volumes:
+      - mongo-data:/data/db  # Volumen para datos persistentes
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  # Servicio para PostgreSQL
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    ports:
+      - "5432:5432"  # Puerto estándar de PostgreSQL
+    volumes:
+      - postgres-data:/var/lib/postgresql/data  # Volumen para persistencia de datos
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: homelab_db
+
+  # Servicio para Python (Django o Flask)
+  python:
+    image: python:3.9
+    container_name: python-container
+    working_dir: /app
+    volumes:
+      - ./python:/app  # Código Python local
+    ports:
+      - "8000:8000"  # Puerto para la aplicación Python
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python manage.py runserver 0.0.0.0:8000  # Django
+    depends_on:
+      - mongo
+      - postgres
+
+volumes:
+  mongo-data:
+    driver: local
+  postgres-data:
+    driver: local
+
