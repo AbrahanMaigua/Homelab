@@ -1,3 +1,4 @@
+require('dotenv').config(); // Cargar variables desde .env
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -5,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
+var consoleRouter = require('./routes/console');
 var usersRouter = require('./routes/users');
 var rulerRouter = require('./routes/rule')
 var app = express();
@@ -20,6 +22,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+//app.use('/console', consoleRouter);
 app.use('/users', usersRouter);
 app.use('/api', rulerRouter);
 

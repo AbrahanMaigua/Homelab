@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+require('dotenv').config(); // Cargar variables desde .env
 /**
  * Module dependencies.
  */
